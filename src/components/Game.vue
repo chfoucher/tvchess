@@ -2,6 +2,17 @@
 import { computed, reactive } from "vue";
 import Cell from "./Cell.vue";
 
+const PION = 1;
+const TOUR = 2;
+const ROI = 3;
+const FOU = 4;
+const CHEVAL = 5;
+const REINE = 6;
+const NOIR = "noir";
+const BLANC = "blanc";
+const mvtsPossibles = [];
+let indexOrigine;
+
 const state = reactive({
   historique: [],
   board: initBoard(),
@@ -17,11 +28,27 @@ const message = computed(() => {
   }
 });
 
-interface Case {
-  r: Number
-  c: Number
-  black: Boolean
+interface Piece {
+  type: number;
+  couleur: string;
 }
+
+interface Case {
+  r: number;
+  c: number;
+  black: boolean;
+  piece?: Piece;
+}
+
+function initPartie() {
+  state.historique = [];
+  state.joueurActif = "blanc";
+  initBoardLayout();
+  // calculeMouvements();
+}
+
+initPartie();
+
 function initBoard() {
   const board: Case[][] = [];
   let currentBlack = false;
@@ -36,6 +63,24 @@ function initBoard() {
   return board;
 }
 
+function initBoardLayout() {
+  //mvtsPossibles[NOIR] = [];
+  //mvtsPossibles[BLANC] = [];
+  const layout = [TOUR, CHEVAL, FOU, REINE, ROI, FOU, CHEVAL, TOUR];
+  for (var c = 0; c < 8; c++) {
+    state.board[0][c].piece = { type: layout[c], couleur: NOIR };
+    // ajouteOrigine(NOIR, 0, c);
+    state.board[1][c].piece = { type: PION, couleur: NOIR };
+    // ajouteOrigine(NOIR, 1, c);
+    state.board[6][c].piece = { type: PION, couleur: BLANC };
+    // ajouteOrigine(BLANC, 6, c);
+    state.board[7][c].piece = { type: layout[c], couleur: BLANC };
+    // ajouteOrigine(BLANC, 7, c);
+    for (let r = 2; r < 6; r++) {
+      state.board[r][c].piece = undefined;
+    }
+  }
+}
 </script>
 
 <template>
@@ -48,14 +93,8 @@ function initBoard() {
         </td>
       </tr>
     </table>
-
-    <h3>
-      You’ve successfully created a project with
-      <a href="https://vitejs.dev/" target="_blank" rel="noopener">Vite</a> +
-      <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>.
-    </h3>
   </div>
-  <div><Cell v-bind="state.board[0][0]" />
+  <div>
     {{ message }}
   </div>
 </template>
@@ -69,6 +108,14 @@ h1 {
 
 h3 {
   font-size: 1.2rem;
+}
+
+table {
+  background-color: darkgray;
+}
+
+td {
+  padding: 0;
 }
 
 .greetings h1,

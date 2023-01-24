@@ -33,16 +33,16 @@ const images = [
 ];
 
 interface Piece {
-  type: number
-  couleur: string
+  type: number;
+  couleur: string;
 }
 
 const props = defineProps<{
-  black: boolean,
-  c: number,
-  piece?: Piece,
-  r: number,
-  selected?: boolean,
+  black: boolean;
+  c: number;
+  piece?: Piece;
+  r: number;
+  selected?: boolean;
 }>();
 const imgSrc = computed(() => {
   if (props.piece === undefined) return undefined;
