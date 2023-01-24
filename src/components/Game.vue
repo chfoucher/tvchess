@@ -41,6 +41,14 @@ function initBoard() {
 <template>
   <div class="greetings">
     <h1 class="green">Vuejs/ts chess</h1>
+    <table>
+      <tr v-for="(row, i) in state.board" :key="i">
+        <td v-for="(cell, j) in row" :key="`${i}-${j}`">
+          <Cell v-bind="cell" />
+        </td>
+      </tr>
+    </table>
+
     <h3>
       You’ve successfully created a project with
       <a href="https://vitejs.dev/" target="_blank" rel="noopener">Vite</a> +

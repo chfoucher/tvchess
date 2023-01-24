@@ -32,13 +32,18 @@ const images = [
   Chess_qlt45,
 ];
 
-const props = defineProps({
-  black: Boolean,
-  c: Number,
-  piece: Object,
-  r: Number,
-  selected: Boolean,
-});
+interface Piece {
+  type: number
+  couleur: string
+}
+
+const props = defineProps<{
+  black: boolean,
+  c: number,
+  piece?: Piece,
+  r: number,
+  selected?: boolean,
+}>();
 const imgSrc = computed(() => {
   if (props.piece === undefined) return undefined;
   const i = 2 * props.piece.type;
