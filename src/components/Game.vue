@@ -1,17 +1,22 @@
 <script setup lang="ts">
-defineProps<{
-  msg: string;
-}>();
+import { reactive } from "vue";
+
+const state = reactive({
+    message: "Clique sur une case !",
+});
 </script>
 
 <template>
   <div class="greetings">
-    <h1 class="green">{{ msg }}</h1>
+    <h1 class="green">Vuejs/ts chess</h1>
     <h3>
       You’ve successfully created a project with
       <a href="https://vitejs.dev/" target="_blank" rel="noopener">Vite</a> +
       <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>.
     </h3>
+  </div>
+  <div>
+    {{ state.message }}
   </div>
 </template>
 
