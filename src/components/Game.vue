@@ -1,9 +1,41 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { computed, reactive } from "vue";
+import Cell from "./Cell.vue";
 
 const state = reactive({
-    message: "Clique sur une case !",
+  historique: [],
+  board: initBoard(),
+  joueurActif: "blanc",
+  selection: null,
 });
+
+const message = computed(() => {
+  if (state.selection) {
+    return "Sélectionne la destination";
+  } else {
+    return `Aux ${state.joueurActif}s de jouer`;
+  }
+});
+
+interface Case {
+  r: Number
+  c: Number
+  black: Boolean
+}
+function initBoard() {
+  const board: Case[][] = [];
+  let currentBlack = false;
+  for (var r = 0; r < 8; r++) {
+    board[r] = [];
+    for (var c = 0; c < 8; c++) {
+      board[r][c] = { r, c, black: currentBlack };
+      currentBlack = !currentBlack;
+    }
+    currentBlack = !currentBlack;
+  }
+  return board;
+}
+
 </script>
 
 <template>
@@ -15,8 +47,8 @@ const state = reactive({
       <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>.
     </h3>
   </div>
-  <div>
-    {{ state.message }}
+  <div><Cell v-bind="state.board[0][0]" />
+    {{ message }}
   </div>
 </template>
 
